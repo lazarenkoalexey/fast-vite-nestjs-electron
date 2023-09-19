@@ -8,10 +8,11 @@ const props = defineProps({
   },
 })
 
-const { sendMsg: sendMsgToMainProcess, onReplyMsg } = window.electron
+const { sendMsg: sendMsgToMainProcess, onReplyMsg, openFileProcess: openFileProcess } = window.electron
 
 const log = ref('')
 const msg = ref('')
+const filePath = ref("C:\\Users\\Oleksii Lazarenko\\Downloads\\newrelic.yml")
 
 async function sendMsg() {
   try {
@@ -27,6 +28,15 @@ async function sendMsg() {
 onReplyMsg((msg: string) => {
   log.value += `[main]: ${msg}  \n`
 })
+
+async function openFile() {
+  try {
+    const resp = await openFileProcess(filePath.value)
+  }
+  catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
 <template>
@@ -38,6 +48,10 @@ onReplyMsg((msg: string) => {
     <button style="margin-left: 20px" @click="sendMsg">
       Send
     </button>
+  </div>
+  <div>
+    <input v-model="filePath" type="text" placeholder="File path">
+    <button @click="openFile">Open file</button>
   </div>
 </template>
 

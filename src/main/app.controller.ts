@@ -18,4 +18,9 @@ export class AppController {
     webContents.send('reply-msg', 'this is msg from webContents.send')
     return of(`The main process received your message: ${msg} at time: ${this.appService.getTime()}`)
   }
+
+  @IpcHandle('open')
+  public handleOpenFileProcess(@Payload() filePath: string): Observable<string> {
+    return this.appService.openFileProcess(filePath)
+  }
 }
